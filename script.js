@@ -14,14 +14,14 @@
 */
 
 export const gameDetails = {   
-    title: 'Game Title',
-    desc: 'Welcome to the world of... here are some quick rules & concepts...',
-    author: 'Student Name',
+    title: '<-Z->  Zorkington Golfshop Game  <-Z->',
+    desc: 'Welcome to the world of Zorkington Golfshop, here are some quick rules & concepts...You can navigate through the golf shop by each department, and view, test & inventory specific items in each department/room.',
+    author: 'Matthew Burrow',
     cohort: 'SBPT-2022',
-    startingRoomDescription: 'What you see before you is...',
+    startingRoomDescription: 'What you see before you is a retail golf shop...',
     playerCommands: [
         // replace these with your games commands as needed
-        'inspect', 'view', 'look', 'pickup',
+        'inspect', 'view', 'look', 'pickup', 'put down', 'test', 'inventory'
     ]
     // Commands are basic things that a player can do throughout the game besides possibly moving to another room. This line will populate on the footer of your game for players to reference. 
     // This shouldn't be more than 6-8 different commands.

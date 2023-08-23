@@ -8,7 +8,7 @@ body {
     display: grid;
     grid-template: repeat(10, 10%) / repeat(12, 8.33%);
     height: 100vh;
-    background-color: rgba(50,50,50,.5);
+    background-color: rgba(50, 50, 50, 0.5);
     background-image: linear-gradient(rgb(0,0,0), var(--upright));
 }
 

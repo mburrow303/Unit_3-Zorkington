@@ -12,24 +12,141 @@
         - index.html should be running in your browser through the build process.
             - use your browsers console throughout testing.
 */
-
+//! Do not alter name "gameDetails" or keynames
 export const gameDetails = {   
     title: '<-Z->  Zorkington Golfshop Game  <-Z->',
-    desc: 'Welcome to the world of Zorkington Golfshop, here are some quick rules & concepts...You can navigate through the golf shop by each department, and view, test & inventory specific items in each department/room.',
+    desc: 'Welcome to the world of Zorkington Golfshop, here are some quick rules & concepts...You can navigate through the golf shop by each department, pickup, drop, & add to inventory specific items in each department/room.',
     author: 'Matthew Burrow',
     cohort: 'SBPT-2022',
-    startingRoomDescription: 'What you see before you is a retail golf shop...',
+    startingRoomDescription: 'What you see before you is a large retail golf shop...',
     playerCommands: [
         // replace these with your games commands as needed
-        'inspect', 'view', 'look', 'pickup', 'put down', 'test', 'inventory'
+        'enter', 'exit', 'pickup', 'drop', 'add to inventory'
     ]
     // Commands are basic things that a player can do throughout the game besides possibly moving to another room. This line will populate on the footer of your game for players to reference. 
     // This shouldn't be more than 6-8 different commands.
 }
 
-// Your code here
+//* Your code here
 
+let currentRoom = 'startingRoom';
+
+//TODO a dictionary of locations created
+let roomState = {
+    startingRoom: ['clubsRoom'],
+    clubsRoom: ['bagsRoom'],
+    bagsRoom: ['clubsRoom', 'ballsRoom'],
+    ballsRoom: ['accessoriesRoom', 'bagsRoom', 'shoesRoom'],
+    accessoriesRoom: ['apparelRoom', 'ballsRoom'],
+    apparelRoom: ['shoesRoom', 'accessoriesRoom'],
+    shoesRoom: ['apparelRoom', 'ballsRoom']
+};
+//console.log(room[currentRoom]);
+
+
+function enterRoom(newRoom) {
+  let validTransitions = roomState[currentRoom];
+  if(validTransitions.includes(newRoom)) {
+    currentRoom = newRoom;
+    console.log(currentRoom);
+  } else {
+    throw(`Invalid Move: ${currentRoom} to ${newRoom}`);
+  }
+}
+
+
+class Item {
+    constructor(name, description, location, canPickup) {
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.canPickup = canPickup;
+    }
+    
+    /*useItem() {
+        console.log(`User has interacted with the item: ${this.name}`);
+        return (`User has interacted with the item: ${this.name}`); // need to work in the different commands?
+    }*/
+}
+
+//useItem();
+
+
+//TODO a set of items generated
+let driver = new Item('driver', 'Driver', 'clubsRoom', true);
+//console.log(driver);
+
+let hybrid = new Item('hybrid', 'Hybrid', 'clubsRoom', true);
+//console.log(hybrid);
+
+let putter = new Item('putter', 'Putter', 'clubsRoom', false);
+console.log(putter);
+
+let standBag = new Item('standBag', 'Stand bag', 'bagsRoom', true);
+
+let cartBag = new Item('cartBag', 'Cart bag', 'bagsRoom', true);
+
+let pushCart = new Item('pushCart', 'Push cart', 'bagsRoom', false);
+
+let titleistBalls = new Item('titleistBalls', 'Titleist ballsRoom', 'balls', true);
+
+let bridgestoneBalls = new Item('bridgestoneBalls', 'Bridgestone balls', 'ballsRoom', true);
+
+let rangeBalls = new Item('practiceBalls', 'Practice balls', 'ballsRoom', false);
+
+let hat = new Item('hat', 'Hat', 'accessoriesRoom', true);
+
+let glove = new Item('glove', 'Glove', 'accessoriesRoom', true);
+
+let tees = new Item('tees', 'Tees', 'accessoriesRoom', false);
+
+let belt = new Item('belt', 'Belt', 'apparelRoom', true);
+
+let shirt = new Item('shirt', 'Polo shirt', 'apparelRoom', true);
+
+let jacket = new Item('jacket', 'Jacket', 'apparelRoom', false);
+
+let spikedShoes = new Item('spikedShoes', 'Spiked Shoes', 'shoesRoom', true);
+
+let spikelessShoes = new Item('spikelessShoes', 'Spikeless Shoes', 'shoesRoom', true);
+
+let socks = new Item('socks', 'Socks', 'shoesRoom', false);
+
+
+ class Location extends Item {
+    constructor(name, description, roomInventory, exits) {
+      super(name, description);
+      this.roomInventory = roomInventory;
+      this.exits = exits;
+    } 
+
+    /*enterLocation() {
+     console.log(`User has entered the room: ${this.location}`);
+     return (`User has entered the room: ${this.location}`);
+    } */ // enter or exit room?
+}
+
+//enterLocation();
+
+
+let startingRoom = new Location('startingRoom', 'Starting Room', '', 'clubsRoom');
+
+let clubsRoom = new Location('clubsRoom', 'Clubs Room', 'driver, hybrid, putter', 'bagsRoom');
+
+let bagsRoom = new Location('bagsRoom', 'Bags Room', 'standBag, cartBag, pushCart', 'clubsRoom, ballsRoom');
+
+let ballsRoom = new Location('ballsRoom', 'Balls Room', 'titleistBalls, bridgestoneBalls, practiceBalls', 'accessoriesRoom, bagRoom, shoesRoom');
+
+let accessoriesRoom = new Location('accessoriesRoom', 'Accessories Room', 'hat, glove, tees', 'apparelRoom, ballsRoom');
+
+let apparelRoom = new Location('apparelRoom', 'Apparel Room', 'belt, shirt, jacket', 'shoesRoom, accessoriesRoom');
+
+let shoesRoom = new Location('shoesRoom', 'Shoes Room', 'spikedShoes, spikelessShoes, socks', 'apparelRoom, ballsRoom');
+
+//! Do not alter name "domDisplay or playerInput"
 export const domDisplay = (playerInput) => {
+    enterRoom('clubsRoom');
+    console.log(playerInput);
     /* 
         TODO: for students
         - This function must return a string. 

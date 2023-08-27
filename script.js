@@ -182,9 +182,9 @@ export const domDisplay = (playerInput) => {
     todo = restrict unknown commands & return response
     todo - error for items not allowed to move
     todo - pickup moveable items
-    todo - drop moveable items
-    todo - add dropped item to current room inventory
     todo - view player inventory
+    todo - drop moveable items
+    todo - add a dropped item to current room inventory
     todo - view current room inventory
     todo - restrict movement to rooms not allowed
     */

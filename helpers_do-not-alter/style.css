@@ -1,6 +1,6 @@
 :root {
-    --upright: #ff5317;
-    --upright-faded: rgba(255, 83, 23,0.6);
+    --upright: #1330d1;
+    --upright-faded: rgba(23, 255, 38, 0.559);
 }
 
 body {
@@ -97,5 +97,5 @@ h6 {
 
 b {
     text-decoration: underline var(--upright);
-    color: black;
+    color: gray;
 }

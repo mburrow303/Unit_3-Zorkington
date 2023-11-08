@@ -40,7 +40,7 @@ let cartBag = new Item('cartBag', 'Cart bag', 'bagsRoom', true);
 let pushCart = new Item('pushCart', 'Push cart', 'bagsRoom', false);
 let titleistBalls = new Item('titleistBalls', 'Titleist ballsRoom', 'balls', true);
 let bridgestoneBalls = new Item('bridgestoneBalls', 'Bridgestone balls', 'ballsRoom', true);
-let rangeBalls = new Item('practiceBalls', 'Practice balls', 'ballsRoom', false);
+let practiceBalls = new Item('practiceBalls', 'Practice balls', 'ballsRoom', false);
 let hat = new Item('hat', 'Hat', 'accessoriesRoom', true);
 let glove = new Item('glove', 'Glove', 'accessoriesRoom', true);
 let tees = new Item('tees', 'Tees', 'accessoriesRoom', false);
@@ -60,13 +60,13 @@ class Location extends Item {
 }
 
 //* list of locations(rooms)
-let startingRoom = new Location('startingRoom', 'Starting Room', 'sign', 'clubsRoom');
-let clubsRoom = new Location('clubsRoom', 'Clubs Room', ['driver', 'hybrid', 'putter'], 'bagsRoom');
-let bagsRoom = new Location('bagsRoom', 'Bags Room', ['standBag', 'cartBag', 'pushCart'], 'clubsRoom, ballsRoom');
-let ballsRoom = new Location('ballsRoom', 'Balls Room', ['titleistBalls', 'bridgestoneBalls', 'practiceBalls'], 'accessoriesRoom, bagRoom, shoesRoom');
-let accessoriesRoom = new Location('accessoriesRoom', 'Accessories Room', ['hat', 'glove', 'tees'], 'apparelRoom, ballsRoom');
-let apparelRoom = new Location('apparelRoom', 'Apparel Room', ['belt', 'shirt', 'jacket'], 'shoesRoom, accessoriesRoom');
-let shoesRoom = new Location('shoesRoom', 'Shoes Room', ['spikedShoes', 'spikelessShoes', 'socks'], 'apparelRoom, ballsRoom');
+let startingRoom = new Location('startingRoom', 'Starting Room', [sign], 'clubsRoom');
+let clubsRoom = new Location('clubsRoom', 'Clubs Room', [driver, hybrid, putter], 'bagsRoom');
+let bagsRoom = new Location('bagsRoom', 'Bags Room', [standBag, cartBag, pushCart], 'clubsRoom, ballsRoom');
+let ballsRoom = new Location('ballsRoom', 'Balls Room', [titleistBalls, bridgestoneBalls, practiceBalls], 'accessoriesRoom, bagRoom, shoesRoom');
+let accessoriesRoom = new Location('accessoriesRoom', 'Accessories Room', [hat, glove, tees], 'apparelRoom, ballsRoom');
+let apparelRoom = new Location('apparelRoom', 'Apparel Room', [belt, shirt, jacket], 'shoesRoom, accessoriesRoom');
+let shoesRoom = new Location('shoesRoom', 'Shoes Room', [spikedShoes, spikelessShoes, socks], 'apparelRoom, ballsRoom');
 
 //* a dictionary of locations created
 let roomState = {
@@ -102,27 +102,44 @@ function enterRoom(newRoom) {
 }
 
 //* view a all items in a rooms item inventory (current room & current inventory)
-function viewRoom() {
-    const currentLocation = roomState[currentRoom];
-    const roomInventory = currentLocation.roomInventory;
-  
-    if (roomInventory.length > 0) {
-      return `In ${currentRoom}, you see the following items: ${roomInventory.join(', ')}`;
+  function formatRoomInventory(roomInventory) {
+    return roomInventory.map((item) => item.name).join(', ');
+  } 
+
+  function viewRoom(roomName) {
+    const currentLocation = roomState[roomName];
+    if (currentLocation && currentLocation.roomInventory.length > 0) {
+      const items = formatRoomInventory(currentLocation.roomInventory);
+      return `In ${roomName}, you see the following items: ${items}`;
     } else {
-      return `No Items Currently in ${currentRoom}.`;
+      return `No items in ${roomName}.`;
     }
   }
+  
 
 //* pickup an item
-/* function pickup(thisItem) {
-    if(currentRoom.includes(thisItem) && thisItem.canPickup) {
-    console.log(`User has picked up the item: ${this.name}`);
-    return (`User has picked up the item: ${this.name}`);
+//? need to check if the item canPickup is true, and if true pickup the item
+  function pickup(itemName) {
+    const currentLocation = roomState[currentRoom];
+    const roomInventory = currentLocation.roomInventory;
+    
+    // Check if the itemName is in the room's inventory
+    const item = roomInventory.find((item) => item.name === itemName);
+  
+    if (item) {
+      if (item.canPickup) {
+        roomInventory.splice(roomInventory.indexOf(item), 1); // Remove from the room inventory
+        inventory.push(item); // Add to player's inventory array
+        console.log(`User has picked up the item: ${itemName}`);
+        return `User has picked up the item: ${itemName}`;
+      } else {
+        return `Invalid Move: Cannot pickup ${itemName}`;
+      }
     } else {
-    throw(`Invalid Move: Cannot pickup ${this.name}`);
+      return `The ${itemName} is not in this room.`;
     }
-    //? need to check if the item canPickup is true, and if true pickup the item
-} */  
+  }
+  
 
 //* drop an item
 /* function drop(thisItem) {
@@ -152,9 +169,11 @@ export const domDisplay = (playerInput) => {
     //console.log(action);
     //console.log(target);
     console.log(playerInput); // action + target
-    console.log(roomState[target].exits); // where we can go from target room
+    //console.log(roomState[target].exits); // where we can go from target room
     console.log(currentRoom);
-    console.log(inventory);
+    //console.log(inventory);
+    //console.log(currentRoom.roomInventory);
+    console.log(roomState[currentRoom].roomInventory);
 
     //enterRoom();
     //viewRoom();

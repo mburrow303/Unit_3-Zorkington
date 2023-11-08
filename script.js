@@ -16,11 +16,8 @@ export const gameDetails = {
 //* Your code here
 
 let currentRoom = 'startingRoom';
+let inventory = []; //? player's inventory
 console.log(currentRoom);
-//console.log(room[currentRoom]);
-
-let inventory = [];
-
 
 class Item {
     constructor(name, description, location, canPickup) {
@@ -34,44 +31,25 @@ class Item {
 //* set of items generated
 let sign = new Item('sign', 'Sign', 'startingRoom', false);
 //console.log(sign.location);
-
 let driver = new Item('driver', 'Driver', 'clubsRoom', true);
 //console.log(driver);
-
 let hybrid = new Item('hybrid', 'Hybrid', 'clubsRoom', true);
-
 let putter = new Item('putter', 'Putter', 'clubsRoom', false);
-
 let standBag = new Item('standBag', 'Stand bag', 'bagsRoom', true);
-
 let cartBag = new Item('cartBag', 'Cart bag', 'bagsRoom', true);
-
 let pushCart = new Item('pushCart', 'Push cart', 'bagsRoom', false);
-
 let titleistBalls = new Item('titleistBalls', 'Titleist ballsRoom', 'balls', true);
-
 let bridgestoneBalls = new Item('bridgestoneBalls', 'Bridgestone balls', 'ballsRoom', true);
-
 let rangeBalls = new Item('practiceBalls', 'Practice balls', 'ballsRoom', false);
-
 let hat = new Item('hat', 'Hat', 'accessoriesRoom', true);
-
 let glove = new Item('glove', 'Glove', 'accessoriesRoom', true);
-
 let tees = new Item('tees', 'Tees', 'accessoriesRoom', false);
-
 let belt = new Item('belt', 'Belt', 'apparelRoom', true);
-
 let shirt = new Item('shirt', 'Polo shirt', 'apparelRoom', true);
-
 let jacket = new Item('jacket', 'Jacket', 'apparelRoom', false);
-
 let spikedShoes = new Item('spikedShoes', 'Spiked Shoes', 'shoesRoom', true);
-
 let spikelessShoes = new Item('spikelessShoes', 'Spikeless Shoes', 'shoesRoom', true);
-
 let socks = new Item('socks', 'Socks', 'shoesRoom', false);
-
 
 class Location extends Item {
     constructor(name, description, roomInventory, exits) {
@@ -83,19 +61,12 @@ class Location extends Item {
 
 //* list of locations(rooms)
 let startingRoom = new Location('startingRoom', 'Starting Room', 'sign', 'clubsRoom');
-
-let clubsRoom = new Location('clubsRoom', 'Clubs Room', 'driver, hybrid, putter', 'bagsRoom');
-
-let bagsRoom = new Location('bagsRoom', 'Bags Room', ['standBag, cartBag, pushCart'], 'clubsRoom, ballsRoom');
-
-let ballsRoom = new Location('ballsRoom', 'Balls Room', 'titleistBalls, bridgestoneBalls, practiceBalls', 'accessoriesRoom, bagRoom, shoesRoom');
-
-let accessoriesRoom = new Location('accessoriesRoom', 'Accessories Room', 'hat, glove, tees', 'apparelRoom, ballsRoom');
-
-let apparelRoom = new Location('apparelRoom', 'Apparel Room', 'belt, shirt, jacket', 'shoesRoom, accessoriesRoom');
-
-let shoesRoom = new Location('shoesRoom', 'Shoes Room', 'spikedShoes, spikelessShoes, socks', 'apparelRoom, ballsRoom');
-
+let clubsRoom = new Location('clubsRoom', 'Clubs Room', ['driver', 'hybrid', 'putter'], 'bagsRoom');
+let bagsRoom = new Location('bagsRoom', 'Bags Room', ['standBag', 'cartBag', 'pushCart'], 'clubsRoom, ballsRoom');
+let ballsRoom = new Location('ballsRoom', 'Balls Room', ['titleistBalls', 'bridgestoneBalls', 'practiceBalls'], 'accessoriesRoom, bagRoom, shoesRoom');
+let accessoriesRoom = new Location('accessoriesRoom', 'Accessories Room', ['hat', 'glove', 'tees'], 'apparelRoom, ballsRoom');
+let apparelRoom = new Location('apparelRoom', 'Apparel Room', ['belt', 'shirt', 'jacket'], 'shoesRoom, accessoriesRoom');
+let shoesRoom = new Location('shoesRoom', 'Shoes Room', ['spikedShoes', 'spikelessShoes', 'socks'], 'apparelRoom, ballsRoom');
 
 //* a dictionary of locations created
 let roomState = {
@@ -108,85 +79,102 @@ let roomState = {
     'shoesRoom': shoesRoom
 };
 
+//* enter a new room
 function enterRoom(newRoom) {
-    let validTransitions = roomState[currentRoom];
+    const currentLocation = roomState[currentRoom];
+    const targetLocation = roomState[newRoom];
+
+    if (!targetLocation) {
+        throw(`Invalid Room: ${newRoom}`); 
+    }
+ 
+    const validTransitions = currentLocation.exits;
+
     if(validTransitions.includes(newRoom)) {
       currentRoom = newRoom;
       console.log(currentRoom);
-      console.log(`User has entered the room: ${this.location}`);
-      return (`User has entered the room: ${this.location}`);
+      console.log(newRoom);
+      console.log(`User has entered the room: ${newRoom}`);
+      return (`User has entered the room: ${currentRoom}`);
     } else {
       throw(`Invalid Move: ${currentRoom} to ${newRoom}`);
     }
 }
 
-/*
-!!
-function View() {
-    
-}
-*/
+//* view a all items in a rooms item inventory (current room & current inventory)
+/* function viewRoom(roomInventory) {
+  this.roomInventory = roomInventory;  
+  if(currentRoom.includes(Item)){
+  return (`${currentRoom} : ${roomInventory}`);
+} else {
+    throw(`No Items Currently in ${currentRoom}`);
+ }
+} */
 
-//view();
-
-function pickup(thisItem) {
+//* pickup an item
+/* function pickup(thisItem) {
     if(currentRoom.includes(thisItem) && thisItem.canPickup) {
     console.log(`User has picked up the item: ${this.name}`);
     return (`User has picked up the item: ${this.name}`);
     } else {
     throw(`Invalid Move: Cannot pickup ${this.name}`);
     }
-}  
+    //? need to check if the item canPickup is true, and if true pickup the item
+} */  
 
-/*       
-!!
-function drop() {
-console.log(`User has dropped the item: ${this.name}`);
-return (`User has dropped the item: ${this.name}`);
-}
-        
-!!
-function inventory() {
+//* drop an item
+/* function drop(thisItem) {
+    if(inventory.includes(thisItem)) {
+    console.log(`User has dropped the item: ${this.name}`);
+    return (`User has dropped the item: ${this.name}`);
+    } else {
+    throw(`Invalid Move: ${thisItem} not in Inventory`);
+    }
+    //? want to drop the item & also add item to current room inventory where it was successfully dropped if
+    //? also remove the item from the player's inventory array if it was previously added
+} */
+
+//* add an item to player inventory
+/* function inventory() {
 console.log(`User has added the item: ${this.name} to inventory`);
 return (`User has added the item: ${this.name} to inventory`);
-*add to inventory array [] (.push)?
-}
-
-drop();
-inventory();
-*/  
-
+//? add this item to the player's inventory array [] (.push)
+} */
 
 //! Do not alter name "domDisplay or playerInput"
 export const domDisplay = (playerInput) => {
     //* Your code here
     let cleanInput = playerInput.split(" ");
     let [action, target] = cleanInput;
-    
-    console.log(action);
-    console.log(target);
-    console.log(roomState[target].exits); // where we can go from current room
-    currentRoom = target;
+    let newRoom = target; 
+    target = currentRoom;
+    //console.log(action);
+    //console.log(target);
+    console.log(playerInput); // action + target
+    console.log(roomState[target].exits); // where we can go from target room
+    //newRoom = target;
     console.log(currentRoom);
+    console.log(newRoom);
     
-    //console.log(`User has entered the room: ${this.location}`);
-    //return (`User has entered the room: ${this.location}`);
-    
+    //viewRoom();
     //pickup();
-    //console.log(inventory);
+    //drop();
+    //inventory();
+    enterRoom(newRoom);
+    console.log(currentRoom);
+    console.log(inventory);
 } 
-
     
     /*
-    *todo - move between rooms
-    todo = restrict unknown commands & return response
-    todo - error for items not allowed to move
-    todo - pickup moveable items
-    todo - view player inventory
-    todo - drop moveable items
-    todo - add a dropped item to current room inventory
-    todo - view current room inventory
+    *todo - move between rooms with proper restrictions - enterRoom();
+    todo - pickup moveable items - pickup();
+    todo - view player inventory - inventory();
+    todo - drop moveable items that have been picked up - drop();
+    todo - add a dropped item to current room inventory 
+    todo - view current room inventory - viewRoom();
     todo - restrict movement to rooms not allowed
+    todo - error for items not allowed to move
+    todo = restrict unknown commands & return response
     */
 
 /* 

@@ -102,14 +102,16 @@ function enterRoom(newRoom) {
 }
 
 //* view a all items in a rooms item inventory (current room & current inventory)
-/* function viewRoom(roomInventory) {
-  this.roomInventory = roomInventory;  
-  if(currentRoom.includes(Item)){
-  return (`${currentRoom} : ${roomInventory}`);
-} else {
-    throw(`No Items Currently in ${currentRoom}`);
- }
-} */
+function viewRoom() {
+    const currentLocation = roomState[currentRoom];
+    const roomInventory = currentLocation.roomInventory;
+  
+    if (roomInventory.length > 0) {
+      return `In ${currentRoom}, you see the following items: ${roomInventory.join(', ')}`;
+    } else {
+      return `No Items Currently in ${currentRoom}.`;
+    }
+  }
 
 //* pickup an item
 /* function pickup(thisItem) {
@@ -146,23 +148,34 @@ export const domDisplay = (playerInput) => {
     //* Your code here
     let cleanInput = playerInput.split(" ");
     let [action, target] = cleanInput;
-    let newRoom = target; 
-    target = currentRoom;
+
     //console.log(action);
     //console.log(target);
     console.log(playerInput); // action + target
     console.log(roomState[target].exits); // where we can go from target room
-    //newRoom = target;
     console.log(currentRoom);
-    console.log(newRoom);
-    
+    console.log(inventory);
+
+    //enterRoom();
     //viewRoom();
     //pickup();
     //drop();
     //inventory();
-    enterRoom(newRoom);
-    console.log(currentRoom);
-    console.log(inventory);
+
+    if (action === "enter") {
+        return enterRoom(target);
+    } else if (action === "view") {
+        return viewRoom(target);
+      } else if (action === "pickup") {
+        return pickup(target);
+      } else if (action === "drop") {
+        return drop(target);
+      } else if (action === "inventory") {
+        return inventory();
+      } else {
+        console.log("Unknown command. Must use valid commands.");
+        return("Unknown command. Must use valid commands.")
+      }
 } 
     
     /*

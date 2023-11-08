@@ -199,14 +199,14 @@ export const domDisplay = (playerInput) => {
     
     /*
     *todo - move between rooms with proper restrictions - enterRoom();
-    todo - pickup moveable items - pickup();
+    *todo - pickup moveable items - pickup();
     todo - view player inventory - inventory();
     todo - drop moveable items that have been picked up - drop();
     todo - add a dropped item to current room inventory 
-    todo - view current room inventory - viewRoom();
-    todo - restrict movement to rooms not allowed
-    todo - error for items not allowed to move
-    todo = restrict unknown commands & return response
+    *todo - view current room inventory - viewRoom();
+    *todo - restrict movement to rooms not allowed
+    *todo - error for items not allowed to move
+    *todo = restrict unknown commands & return response
     */
 
 /* 

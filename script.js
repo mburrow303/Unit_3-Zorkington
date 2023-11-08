@@ -97,11 +97,11 @@ function enterRoom(newRoom) {
       console.log(`User has entered the room: ${newRoom}`);
       return (`User has entered the room: ${currentRoom}`);
     } else {
-      throw(`Invalid Move: ${currentRoom} to ${newRoom}`);
+      throw(`Invalid Move: ${newRoom} cannot be accessed from ${currentRoom}`);
     }
 }
 
-//* view a all items in a rooms item inventory (current room & current inventory)
+//* view a all items in a room's item inventory (current room & current inventory)
   function formatRoomInventory(roomInventory) {
     return roomInventory.map((item) => item.name).join(', ');
   } 
@@ -116,7 +116,6 @@ function enterRoom(newRoom) {
     }
   }
   
-
 //* pickup an item
 //? need to check if the item canPickup is true, and if true pickup the item
   function pickup(itemName) {
@@ -128,7 +127,7 @@ function enterRoom(newRoom) {
   
     if (item) {
       if (item.canPickup) {
-        roomInventory.splice(roomInventory.indexOf(item), 1); // Remove from the room inventory
+        roomInventory.splice(roomInventory.indexOf(item), 1); // Remove from the room's inventory
         inventory.push(item); // Add to player's inventory array
         console.log(`User has picked up the item: ${itemName}`);
         return `User has picked up the item: ${itemName}`;
@@ -140,7 +139,6 @@ function enterRoom(newRoom) {
     }
   }
   
-
 //* drop an item
 /* function drop(thisItem) {
     if(inventory.includes(thisItem)) {
@@ -169,17 +167,8 @@ export const domDisplay = (playerInput) => {
     //console.log(action);
     //console.log(target);
     console.log(playerInput); // action + target
-    //console.log(roomState[target].exits); // where we can go from target room
     console.log(currentRoom);
-    //console.log(inventory);
-    //console.log(currentRoom.roomInventory);
     console.log(roomState[currentRoom].roomInventory);
-
-    //enterRoom();
-    //viewRoom();
-    //pickup();
-    //drop();
-    //inventory();
 
     if (action === "enter") {
         return enterRoom(target);

@@ -63,7 +63,7 @@ class Location extends Item {
 let startingRoom = new Location('startingRoom', 'Starting Room', [sign], 'clubsRoom');
 let clubsRoom = new Location('clubsRoom', 'Clubs Room', [driver, hybrid, putter], 'bagsRoom');
 let bagsRoom = new Location('bagsRoom', 'Bags Room', [standBag, cartBag, pushCart], 'clubsRoom, ballsRoom');
-let ballsRoom = new Location('ballsRoom', 'Balls Room', [titleistBalls, bridgestoneBalls, practiceBalls], 'accessoriesRoom, bagRoom, shoesRoom');
+let ballsRoom = new Location('ballsRoom', 'Balls Room', [titleistBalls, bridgestoneBalls, practiceBalls], 'accessoriesRoom, bagsRoom, shoesRoom');
 let accessoriesRoom = new Location('accessoriesRoom', 'Accessories Room', [hat, glove, tees], 'apparelRoom, ballsRoom');
 let apparelRoom = new Location('apparelRoom', 'Apparel Room', [belt, shirt, jacket], 'shoesRoom, accessoriesRoom');
 let shoesRoom = new Location('shoesRoom', 'Shoes Room', [spikedShoes, spikelessShoes, socks], 'apparelRoom, ballsRoom');
@@ -92,8 +92,8 @@ function enterRoom(newRoom) {
 
     if(validTransitions.includes(newRoom)) {
       currentRoom = newRoom;
+      //console.log(newRoom);
       console.log(currentRoom);
-      console.log(newRoom);
       console.log(`User has entered the room: ${newRoom}`);
       return (`User has entered the room: ${currentRoom}`);
     } else {
@@ -140,16 +140,20 @@ function enterRoom(newRoom) {
   }
   
 //* drop an item
-/* function drop(thisItem) {
-    if(inventory.includes(thisItem)) {
-    console.log(`User has dropped the item: ${this.name}`);
-    return (`User has dropped the item: ${this.name}`);
+//? want to drop the item & also add item to current room inventory where it was successfully dropped if
+//? also remove the item from the player's inventory array if it was previously added
+  function drop(itemName) {
+    const item = inventory.find((item) => item.name === itemName);
+  
+    if (item) {
+      inventory.splice(inventory.indexOf(item), 1); // Remove from the player's inventory
+      roomState[currentRoom].roomInventory.push(item); // Add to the room's inventory
+      return `User dropped the ${itemName}.`;
     } else {
-    throw(`Invalid Move: ${thisItem} not in Inventory`);
+      return `You don't have the ${itemName} in your inventory.`;
     }
-    //? want to drop the item & also add item to current room inventory where it was successfully dropped if
-    //? also remove the item from the player's inventory array if it was previously added
-} */
+  }
+
 
 //* add an item to player inventory
 /* function inventory() {
@@ -190,8 +194,8 @@ export const domDisplay = (playerInput) => {
     *todo - move between rooms with proper restrictions - enterRoom();
     *todo - pickup moveable items - pickup();
     todo - view player inventory - inventory();
-    todo - drop moveable items that have been picked up - drop();
-    todo - add a dropped item to current room inventory 
+    *todo - drop moveable items that have been picked up - drop();
+    *todo - add a dropped item to current room inventory 
     *todo - view current room inventory - viewRoom();
     *todo - restrict movement to rooms not allowed
     *todo - error for items not allowed to move
